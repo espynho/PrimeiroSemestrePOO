@@ -5,11 +5,20 @@
  */
 package projetointerdisciplinarnovo;
 
+import java.sql.*;
+import bancoDeDados.ModuloDeConexao;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author fabinho
  */
 public class Cadastro {
+// ====== migração para banco de dados ======
+ Connection conexao = null;
+ PreparedStatement pst = null;
+ ResultSet rs = null;  
+ 
 // ====== dados para cadastro dos gerentes ======
     private Gerente[] gerentes = new Gerente[5];
     private int qtdGerentes = 1;
@@ -199,52 +208,23 @@ public class Cadastro {
         return "não cadastrado";
     }
     // ====== verificação de motorista existente pelo nome de usuário ======
-    public Motorista verificarMotoristaCadastrado(String motoristaRecebido) {
-        if (qtdMotoristas > 0) {
-            for (int i = 0; i < qtdMotoristas; i++) {
-                if (motoristas[i].getNomeUsuario().equals(motoristaRecebido)) {
-                    //if (motoristas[i].getNomeUsuario().equals(motoristaRecebido)) {
-                    return motoristas[i];
+    // ****** Banco de Dados *******
+    public String verificarMotoristaCadastrado(String motoristaRecebido) {
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Pessoa where usuario = ? " ; // comandos sql
+        try {
+            pst = conexao.prepareCall(sql);
+            pst.setString(1, motoristaRecebido);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+           String nome = rs.getString(2);
+                System.out.println("Nome recebido do banco de dados: " + nome);
                 }
-            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e);
         }
         return null;
     }
-    /*    
-    // ====== aplicação de multa ======
-    public void aplicarMulta(Multa multaRecebida) {
-     String nome,carro,multa;
-     nome = multaRecebida.getMotoristaMultado();
-     carro = multaRecebida.getVeiculoMultado();
-     multa = multaRecebida.getDescricao();
-        System.out.println("Dados da multa: "+nome);
-        System.out.println("Dados da multa: "+carro);
-        System.out.println("Dados da multa: "+multa);
-        if(qtdMotoristas > 0 && qtdVeiculos > 0){ // confirmçao se tem motoristas e carros cadastrados
-            for(int i = 0; i < qtdMotoristas; i++){
-            if(motoristas[i].getNome().equals(nome)){
-                System.out.println("Motorista encontrado");
-               motoristas[i].cadastroMultaMotorista(nome, carro, multa); 
-            }  else{
-                System.out.println("Não encontrado");
-            }  
-            }
-        }
-    }
-     */
- /*
-// ====== aplicação de multa ======
-    public void aplicarMulta(Multa multaRecebida) {
-        if (qtdMultas < multas.length) {
-            multas[qtdMultas] = multaRecebida;
-            qtdMultas++;
-            System.out.println("Motorista Multadotado");
-            System.out.println("Posição do vetor: " + qtdMultas);
-        } else {
-            System.out.println("Tamanho maximo atingido");
-        }
-    }
-     */
     // ====== verificação para login ======
     public String nomeMotoristaCadastrado(String motRecebido) {
         String nomeUsuario = "";
@@ -261,14 +241,20 @@ public class Cadastro {
         return null;
     }
     // ====== verificação para login motoristas ======
+    // ****** Banco de Dados *******
     public int loginMotoristaCadastrado(String usrRecebido, String senRecebido) {
-        if (qtdMotoristas > 0) {
-            for (int i = 0; i < qtdMotoristas; i++) {
-                if (usrRecebido.equals(motoristas[i].getNomeUsuario())
-                        && senRecebido.equals(motoristas[i].getSenhaUsuario())) {
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Pessoa where usuario = ? and senha = ?" ; // comandos sql
+        try {
+            pst = conexao.prepareCall(sql);
+            pst.setString(1, usrRecebido);
+            pst.setString(2, senRecebido);
+            rs = pst.executeQuery();
+            if (rs.next()) {
                     return 1;
                 }
-            }
+        } catch (Exception e) {
+          JOptionPane.showMessageDialog(null,e);
         }
         return 0;
     }
@@ -303,19 +289,7 @@ public class Cadastro {
         return 0;
     }
     // ====== motorista logado ======
-    // public Motorista motoristaLogadoDados(String motRecebido) {
-/*        public String motoristaLogadoDados(String motRecebido) {
-        if (qtdMotoristas > 0) {
-            for (int i = 0; i < qtdMotoristas; i++) {
-                if (motRecebido.equals(motoristas[i].getNomeUsuario())) {
-                    return motoristas[i].mostrarMultaMotorista();
-                }
-            }
-        }
-        return null;
-    }
-        // public Motorista motoristaLogadoDados(String motRecebido) {
-     */ public Motorista motoristaLogadoDados(String motRecebido) {
+ public Motorista motoristaLogadoDados(String motRecebido) {
         if (qtdMotoristas > 0) {
             for (int i = 0; i < qtdMotoristas; i++) {
                 if (motRecebido.equals(motoristas[i].getNomeUsuario())) {
