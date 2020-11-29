@@ -34,15 +34,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal() {
         initComponents();
         //cxEntrada1CadV3.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
-        funcoes.usuariosFixos();
-        cadastroFixo();
+        //funcoes.usuariosFixos();
+        //cadastroFixo();
         travarAbas();
         conexao = ModuloDeConexao.conector();
         statusBancoDeDados();
-        
+
         //System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
+    public void comboBoxMenu(){
+        String item = funcoes.comboBoxMenu();
+       selecaoAgenteMot.addItem(item); // adiciona motorista no menu da tela agente
+   
+        System.out.println(funcoes.comboBoxMenu());
+    }
 
     public void statusBancoDeDados() {
         if (conexao != null) {
@@ -124,55 +130,48 @@ public class TelaPrincipal extends javax.swing.JFrame {
         String nomeDigitado = entradaNomeLogin.getText();
         String senhaDigitado = entradaSenhaLogin.getText();
         //System.out.println("Cod retornado: "+funcoes.loginMotoristaCadastrado(nomeDigitado, senhaDigitado));
-        if (funcoes.loginMotoristaCadastrado(nomeDigitado, senhaDigitado) == 1) {
-            System.out.println("Motorista logado");
-            painelDeAbas.setEnabledAt(4, true); // aba motorista
-            motoristaLogado(nomeDigitado);
-            limparTelaLogin();
-        } else if (funcoes.loginAgenteCadastrado(nomeDigitado, senhaDigitado) == 2) {
-            System.out.println("Agente logado");
-            painelDeAbas.setEnabledAt(1, true); // aba cadastro motoristas
-            painelDeAbas.setEnabledAt(2, true); // aba cadastro veiculos
-            painelDeAbas.setEnabledAt(3, true); // aba multas
-            camposSoNumeros();
-            limparTelaLogin();
-        } else if (funcoes.loginGerenteCadastrado(nomeDigitado, senhaDigitado) == 3) {
-            System.out.println("Gerente logado");
-            painelDeAbas.setEnabledAt(5, true); // aba gerente
-            limparTelaLogin();
-        } else if (funcoes.loginADM(nomeDigitado, senhaDigitado) == 4) {
-            System.out.println("!====== Modo Administrador ======!");
-            painelDeAbas.setEnabledAt(1, false); // aba cadastro motoristas
-            painelDeAbas.setEnabledAt(2, false); // aba cadastro veiculos
-            painelDeAbas.setEnabledAt(3, false); // aba multas
-            painelDeAbas.setEnabledAt(4, false); // aba motorista
-            painelDeAbas.setEnabledAt(5, false); // aba gerente
-            painelDeAbas.setEnabledAt(6, true); // aba adm
-            limparTelaLogin();
-        } else {
-            //System.out.println("Usuário ou senha inválidos");
-            janelaErro401();
+        switch (funcoes.login(nomeDigitado, senhaDigitado)) {
+            case 1:
+                System.out.println("Motorista logado");
+                painelDeAbas.setEnabledAt(4, true); // aba motorista
+                limparTelaLogin();
+                break;
+            case 2:
+                System.out.println("Agente logado");
+                painelDeAbas.setEnabledAt(1, true); // aba cadastro motoristas
+                painelDeAbas.setEnabledAt(2, true); // aba cadastro veiculos
+                painelDeAbas.setEnabledAt(3, true); // aba multas
+                //comboBoxMenu();
+                System.out.println(funcoes.testeContagem());
+                camposSoNumeros();
+                limparTelaLogin();
+                break;
+            case 3:
+                System.out.println("Gerente logado");
+                painelDeAbas.setEnabledAt(5, true); // aba gerente
+                limparTelaLogin();
+                break;
+            case 4:
+                System.out.println("!====== Modo Administrador ======!");
+                painelDeAbas.setEnabledAt(1, false); // aba cadastro motoristas
+                painelDeAbas.setEnabledAt(2, false); // aba cadastro veiculos
+                painelDeAbas.setEnabledAt(3, false); // aba multas
+                painelDeAbas.setEnabledAt(4, false); // aba motorista
+                painelDeAbas.setEnabledAt(5, false); // aba gerente
+                painelDeAbas.setEnabledAt(6, true); // aba adm
+                limparTelaLogin();
+                break;
+            default:
+                System.out.println("Usuario ou senha invalidos");
+                janelaErro401();
         }
     }
-
     // ====== mostrando motorista logado ======
     public void motoristaLogado(String nomeRecebidoLogin) {
         System.out.println("Nome usuario recebido da função login: " + nomeRecebidoLogin);
         funcoes.verificarMotoristaCadastrado(nomeRecebidoLogin);
-        
-        //nomeMotoristaLogado = funcoes.verificarMotorista(nomeRecebidoLogin).getNome();
-        //nomeMotoristaLogado = nomeMotorista;
-        //System.out.println("o motorista atual é: " + nomeMotoristaLogado);
     }
 
-    /*    String nomeDigitado = entradaNomeLogin.getText();
-        if(nomeDigitado.equals(funcoesParaCadastrar.nomeMotoristaCadastrado(nomeDigitado))){
-            System.out.println("Motorista encontrado tela");
-        }else{
-            System.out.println("Motorista não encontrado tela");
-        }
-    }
-     */
     // ====== mostrar valor de todas multas da empresa ======
     public String valorTotalMultas() {
         if (valorDasMultas > 0) {
@@ -710,6 +709,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         painelDeAbas.addTab("Cadastro Veiculos", jPanel3);
 
         selecaoAgenteMot.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um motorista" }));
+        selecaoAgenteMot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecaoAgenteMotActionPerformed(evt);
+            }
+        });
 
         botaoAplicarMulta.setText("Aplicar");
         botaoAplicarMulta.addActionListener(new java.awt.event.ActionListener() {
@@ -1185,6 +1189,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void selecaoAgenteMotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecaoAgenteMotActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selecaoAgenteMotActionPerformed
 
     /**
      * @param args the command line arguments
