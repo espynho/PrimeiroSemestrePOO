@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package projetointerdisciplinarnovo;
+import java.sql.*; // para trabalhar com SQL
+import bancoDeDados.ModuloDeConexao; // modulo criado para conexão
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,6 +15,10 @@ import javax.swing.JOptionPane;
  * @author fabinho
  */
 public class TelaPrincipal extends javax.swing.JFrame {
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
 
     Cadastro funcoes = new Cadastro();
     // ====== dados motorista logado ======
@@ -30,6 +36,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         funcoes.usuariosFixos();
         cadastroFixo();
         travarAbas();
+        conexao = ModuloDeConexao.conector();
+        System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
 // ====== janela erro 400 dados vazios =====
