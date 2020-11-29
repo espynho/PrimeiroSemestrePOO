@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package projetointerdisciplinarnovo;
+
 import java.sql.*; // para trabalhar com SQL
 import bancoDeDados.ModuloDeConexao; // modulo criado para conexão
 
@@ -15,10 +16,10 @@ import javax.swing.JOptionPane;
  * @author fabinho
  */
 public class TelaPrincipal extends javax.swing.JFrame {
+
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-    
 
     Cadastro funcoes = new Cadastro();
     // ====== dados motorista logado ======
@@ -37,34 +38,49 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cadastroFixo();
         travarAbas();
         conexao = ModuloDeConexao.conector();
-        System.out.println("Status: " + conexao);
+        statusBancoDeDados();
+        
+        //System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
+
+    public void statusBancoDeDados() {
+        if (conexao != null) {
+            saidaStatus.setText("Conectado");
+        } else {
+            saidaStatus.setText("disconectado");
+        }
+    }
 // ====== janela erro 400 dados vazios =====
+
     public void janelaErro400() {
         String erro = "Erro 400";
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "Preencha todos os campos", erro, JOptionPane.INFORMATION_MESSAGE);
     }
+
     // ====== janela erro 401 senha ou usuário incorretos =====
     public void janelaErro401() {
         String erro = "Erro 401";
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "Usuário ou senha inválidos", erro, JOptionPane.INFORMATION_MESSAGE);
     }
-  // ====== janela erro 402 senha veiculo ja cadastrado =====
+    // ====== janela erro 402 senha veiculo ja cadastrado =====
+
     public void janelaErro402() {
         String erro = "Erro 402";
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "Veículo ja cadastrado", erro, JOptionPane.INFORMATION_MESSAGE);
     }
-     // ====== janela erro 403 senhas não são iguais =====
+    // ====== janela erro 403 senhas não são iguais =====
+
     public void janelaErro403() {
         String erro = "Erro 402";
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "As senhas digitadas não são iguais", erro, JOptionPane.INFORMATION_MESSAGE);
     }
 // ====== adiciona itens iniciais no menus de multas ======
+
     public void cadastroFixo() {
         String motorista0 = funcoes.motoristaFixo();
         selecaoAgenteMot.addItem(motorista0); // adiciona motorista no menu da tela agente
@@ -72,13 +88,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         selecaoAgenteCar.addItem(veiculo0); // adiciona motorista no menu da tela agente
     }
 // ====== campos somente números ======
-    public void camposSoNumeros(){
-    cxEntrada1CadV3.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
-    cxEntrada4Agente.setDocument(new SoNumero());
-    cxEntrada2CadM.setDocument(new SoNumero());
-    cxEntrada3CadM.setDocument(new SoNumero());
+
+    public void camposSoNumeros() {
+        cxEntrada1CadV3.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
+        cxEntrada4Agente.setDocument(new SoNumero());
+        cxEntrada2CadM.setDocument(new SoNumero());
+        cxEntrada3CadM.setDocument(new SoNumero());
     }
 // ====== aplicação de multas ======
+
     public void aplicacaoMulta() {
         //System.out.println(selecaoAgenteMot.getSelectedItem()); // objeto selecionado motorista
         //System.out.println(selecaoAgenteCar.getSelectedItem()); // objeto selecionado carro
@@ -88,8 +106,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         String descricao = (String) selecaoAgenteMul.getSelectedItem();// netBeans completou o código
         if (modelo.equals("Selecione um veiculo") || nome.equals("Selecione um motorista")
                 || descricao.equals("Selecione uma Multa")) {
-           //System.out.println("Falta dados, tente novamente");
-           janelaErro400();
+            //System.out.println("Falta dados, tente novamente");
+            janelaErro400();
         } else {
             Multa tomada = funcoes.verificarMulta(descricao); // verificar se a multa está cadastrada
             Motorista motoristaMultado = funcoes.verificarMotorista(nome); // verificar se o motorista está cadastrado
@@ -255,8 +273,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cxEntrada2CadM.setText(vazio);
         cxEntrada3CadM.setText(vazio);
     }
+
     // ====== limpar tela gerente ======
-    public void limparTelaGerente(){
+    public void limparTelaGerente() {
         String vazio = "";
         saidaGerente.setText(vazio);
         selecaoGerente.setSelectedIndex(0);
@@ -308,6 +327,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoEntrarLogin = new javax.swing.JButton();
         botaoSairLogin = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        saidaStatus = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         cxEntrada1Agente = new javax.swing.JTextField();
         cxEntrada2Agente = new javax.swing.JTextField();
@@ -400,6 +421,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/logo.png"))); // NOI18N
         jLabel24.setText("jLabel24");
 
+        jLabel25.setText("Status:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -417,9 +440,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addComponent(botaoEntrarLogin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botaoSairLogin)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saidaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,7 +470,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jLabel24)))
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(saidaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         painelDeAbas.addTab("Entrada", jPanel1);
@@ -1009,8 +1042,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (cxEntrada5Agente.getText().isEmpty() || cxEntrada6Agente.getText().isEmpty() || cxEntrada6Agente1.getText().isEmpty() || cxEntrada1Agente.getText().isEmpty() || cxEntrada2Agente.getText().isEmpty() || cxEntrada3Agente.getText().isEmpty() || cxEntrada4Agente.getText().isEmpty()) {
-           // System.out.println("Algum campo está vazio");
-           janelaErro400();
+            // System.out.println("Algum campo está vazio");
+            janelaErro400();
         } else if (cxEntrada6Agente.getText().equals(cxEntrada6Agente1.getText())) {
             Motorista cadastroMotorista = new Motorista(cxEntrada5Agente.getText(), cxEntrada6Agente.getText(), cxEntrada1Agente.getText(), cxEntrada2Agente.getText(), cxEntrada3Agente.getText(), cxEntrada4Agente.getText());
             //Motorista cadastroMotorista = new Motorista(nomeUsuario, senhaUsuario, nome, cpf, rg, ri);
@@ -1019,8 +1052,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             limparTelaMotoristas();
             // adiciona motorista no menu da tela agente
         } else {
-           // System.out.println("Senhas não são iguais");
-           janelaErro403();
+            // System.out.println("Senhas não são iguais");
+            janelaErro403();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1237,6 +1270,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1256,6 +1290,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane painelDeAbas;
     private javax.swing.JTextArea saidaGerente;
     private javax.swing.JTextField saidaMotoristaAdmin;
+    private javax.swing.JLabel saidaStatus;
     private javax.swing.JTextArea saidaTextoMotorista;
     private javax.swing.JTextField saidaVeiculoAdmin;
     private javax.swing.JTextField saidaVeiculoAdmin1;
