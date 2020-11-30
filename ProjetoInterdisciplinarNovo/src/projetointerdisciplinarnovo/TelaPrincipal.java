@@ -44,17 +44,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 // ====== meus métodos ======
     public void comboBoxMenu(){
+        comboBoxMenuMotoristas();
+        comboBoxMenuVeiculos();
+    }
+    public void comboBoxMenuMotoristas(){
         String sql = "select nome from Pessoa where cargo='motorista'";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            //String nome ="";
             while(rs.next()) {
-            selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motorista no menu da tela agente
+            selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motoristas no menu da tela agente
             }       
         } catch (Exception e) {
         }
         
+    }
+     public void comboBoxMenuVeiculos(){
+        String sql = "select placa from Veiculo";
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while(rs.next()) {
+            selecaoAgenteCar.addItem(rs.getString(1)); // adiciona veiculos no menu da tela agente
+            }       
+        } catch (Exception e) {
+        }   
     }
 
     public void statusBancoDeDados() {
