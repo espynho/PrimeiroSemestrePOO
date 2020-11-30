@@ -119,18 +119,6 @@ public class Cadastro {
         }
         return "Sem Motoristas Cadastrados";
     }
-// ====== cadastro de veiculos no vetor ======
-
-    public void cadastroVeiculos(Veiculo recebeVeiculo) {
-        if (qtdVeiculos < veiculos.length) {
-            veiculos[qtdVeiculos] = recebeVeiculo;
-            qtdVeiculos++;
-            System.out.println("Veiculo Cadastrado");
-            System.out.println("Posição do vetor: " + qtdVeiculos);
-        } else {
-            System.out.println("Tamanho maximo atingido");
-        }
-    }
 // ====== veiculos cadastrados ======
 
     public void veiculosCadastrados() {

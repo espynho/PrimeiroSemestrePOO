@@ -104,6 +104,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
              JOptionPane.showConfirmDialog(null, e);
          }
      }
+        // ****** banco de dados ******
+     public void cadastroMulta(){
+       String sql = "insert into Multa (descricao, pontuacao, valor) values(?,?,?)";
+         try {
+             pst = conexao.prepareStatement(sql);
+             pst.setString(1,cx_in_description_multa.getText());
+             pst.setString(2,cx_in_punctuation_multa.getText());
+             pst.setString(3,cx_in_value_multa.getText());
+             pst.executeUpdate();
+         } catch (Exception e) {
+             JOptionPane.showConfirmDialog(null, e);
+         }
+     }
 
     public void statusBancoDeDados() {
         if (conexao != null) {
@@ -153,8 +166,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public void camposSoNumeros() {
         cx_in_year_veiculo.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
         cx_in_ri_motorista.setDocument(new SoNumero());
-        cxEntrada2CadM.setDocument(new SoNumero());
-        cxEntrada3CadM.setDocument(new SoNumero());
+        cx_in_value_multa.setDocument(new SoNumero());
+        cx_in_punctuation_multa.setDocument(new SoNumero());
     }
 // ====== aplicação de multas ======
 
@@ -325,9 +338,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     public void limparTelaMultas1() {
         String vazio = "";
-        cxEntrada1CadM.setText(vazio);
-        cxEntrada2CadM.setText(vazio);
-        cxEntrada3CadM.setText(vazio);
+        cx_in_description_multa.setText(vazio);
+        cx_in_value_multa.setText(vazio);
+        cx_in_punctuation_multa.setText(vazio);
     }
 
     // ====== limpar tela gerente ======
@@ -421,11 +434,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         selecaoAgenteMul = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        cxEntrada1CadM = new javax.swing.JTextField();
-        cxEntrada2CadM = new javax.swing.JTextField();
+        cx_in_description_multa = new javax.swing.JTextField();
+        cx_in_value_multa = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        cxEntrada3CadM = new javax.swing.JTextField();
+        cx_in_punctuation_multa = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -849,9 +862,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                                 .addComponent(jButton7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton8))
-                            .addComponent(cxEntrada2CadM, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cxEntrada1CadM, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cxEntrada3CadM, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cx_in_value_multa, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cx_in_description_multa, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cx_in_punctuation_multa, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(101, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -861,16 +874,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selecaoAgenteMot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(cxEntrada1CadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cx_in_description_multa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selecaoAgenteCar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cxEntrada2CadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_value_multa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cxEntrada3CadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cx_in_punctuation_multa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13))
                     .addComponent(selecaoAgenteMul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
@@ -1186,17 +1199,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        if (cxEntrada1CadM.getText().isEmpty()
-                || cxEntrada2CadM.getText().isEmpty()
-                || cxEntrada3CadM.getText().isEmpty()) {
+        if (cx_in_description_multa.getText().isEmpty()
+                || cx_in_value_multa.getText().isEmpty()
+                || cx_in_punctuation_multa.getText().isEmpty()) {
             //System.out.println("Preencha todos os campos");
             janelaErro400();
         } else {
             //Multa cadastromulta = new Multa(cxEntrada1CadM.getText(), Integer.parseInt(cxEntrada2CadM.getText()),Integer.parseInt(cxEntrada3CadM.getText()));
-            Multa cadastromulta = new Multa(cxEntrada1CadM.getText(), Float.valueOf(cxEntrada2CadM.getText()), Integer.parseInt(cxEntrada3CadM.getText()));
+            //Multa cadastromulta = new Multa(cx_in_description_multa.getText(), Float.valueOf(cx_in_value_multa.getText()), Integer.parseInt(cx_in_punctuation_multa.getText()));
             //Multa cadastromulta = new Multa(descricao, TOP_ALIGNMENT, NORMAL));
-            funcoes.cadastroMultas(cadastromulta);
-            selecaoAgenteMul.addItem(cxEntrada1CadM.getText()); // adiciona a multa no menu 
+            //funcoes.cadastroMultas(cadastromulta);
+            cadastroMulta();
+            selecaoAgenteMul.addItem(cx_in_description_multa.getText()); // adiciona a multa no menu 
             limparTelaMultas1();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -1311,19 +1325,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botaoAplicarMulta;
     private javax.swing.JButton botaoEntrarLogin;
     private javax.swing.JButton botaoSairLogin;
-    private javax.swing.JTextField cxEntrada1CadM;
-    private javax.swing.JTextField cxEntrada2CadM;
-    private javax.swing.JTextField cxEntrada3CadM;
     private javax.swing.JTextField cx_in_assembler_veiculo;
     private javax.swing.JTextField cx_in_board_veiculo;
     private javax.swing.JTextField cx_in_cpf_motorista;
+    private javax.swing.JTextField cx_in_description_multa;
     private javax.swing.JTextField cx_in_model_veiculo;
     private javax.swing.JTextField cx_in_name_motorista;
+    private javax.swing.JTextField cx_in_punctuation_multa;
     private javax.swing.JPasswordField cx_in_repsenha_motorista;
     private javax.swing.JTextField cx_in_rg_motorista;
     private javax.swing.JTextField cx_in_ri_motorista;
     private javax.swing.JPasswordField cx_in_senha_motorista;
     private javax.swing.JTextField cx_in_user_motorista;
+    private javax.swing.JTextField cx_in_value_multa;
     private javax.swing.JTextField cx_in_year_veiculo;
     private javax.swing.JTextField entradaMotoristaAdmin;
     private javax.swing.JTextField entradaMotoristaAdmin2;

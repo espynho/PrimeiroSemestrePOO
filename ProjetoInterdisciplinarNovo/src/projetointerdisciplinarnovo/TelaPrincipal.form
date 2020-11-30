@@ -536,9 +536,9 @@
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Component id="jButton8" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="cxEntrada2CadM" min="-2" pref="220" max="-2" attributes="0"/>
-                                  <Component id="cxEntrada1CadM" min="-2" pref="220" max="-2" attributes="0"/>
-                                  <Component id="cxEntrada3CadM" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="cx_in_value_multa" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="cx_in_description_multa" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="cx_in_punctuation_multa" min="-2" pref="220" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -553,18 +553,18 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="selecaoAgenteMot" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada1CadM" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_description_multa" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="selecaoAgenteCar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada2CadM" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_value_multa" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="cxEntrada3CadM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cx_in_punctuation_multa" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="selecaoAgenteMul" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -647,9 +647,9 @@
                 <Property name="text" type="java.lang.String" value="Valor:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada1CadM">
+            <Component class="javax.swing.JTextField" name="cx_in_description_multa">
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada2CadM">
+            <Component class="javax.swing.JTextField" name="cx_in_value_multa">
             </Component>
             <Component class="javax.swing.JButton" name="jButton7">
               <Properties>
@@ -667,7 +667,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada3CadM">
+            <Component class="javax.swing.JTextField" name="cx_in_punctuation_multa">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel13">
               <Properties>
