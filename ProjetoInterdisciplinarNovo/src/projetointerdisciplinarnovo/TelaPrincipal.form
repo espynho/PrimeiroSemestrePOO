@@ -197,7 +197,7 @@
                                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="cxEntrada5Agente" pref="157" max="32767" attributes="0"/>
+                                  <Component id="cx_in_user_motorista" pref="157" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -207,8 +207,8 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="cxEntrada3Agente" pref="157" max="32767" attributes="0"/>
-                                  <Component id="cxEntrada1Agente" max="32767" attributes="0"/>
+                                  <Component id="cx_in_rg_motorista" pref="157" max="32767" attributes="0"/>
+                                  <Component id="cx_in_name_motorista" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -222,10 +222,10 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="cxEntrada6Agente1" max="32767" attributes="0"/>
-                              <Component id="cxEntrada2Agente" alignment="0" pref="174" max="32767" attributes="0"/>
-                              <Component id="cxEntrada4Agente" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cxEntrada6Agente" max="32767" attributes="0"/>
+                              <Component id="cx_in_repsenha_motorista" max="32767" attributes="0"/>
+                              <Component id="cx_in_cpf_motorista" alignment="0" pref="174" max="32767" attributes="0"/>
+                              <Component id="cx_in_ri_motorista" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cx_in_senha_motorista" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -238,29 +238,29 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada1Agente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_name_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada2Agente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_cpf_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada4Agente" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada3Agente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_ri_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_rg_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada5Agente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_user_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada6Agente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_senha_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cxEntrada6Agente1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_repsenha_motorista" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -273,19 +273,19 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="cxEntrada1Agente">
+            <Component class="javax.swing.JTextField" name="cx_in_name_motorista">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada1AgenteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_name_motoristaActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada2Agente">
+            <Component class="javax.swing.JTextField" name="cx_in_cpf_motorista">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada2AgenteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_cpf_motoristaActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada3Agente">
+            <Component class="javax.swing.JTextField" name="cx_in_rg_motorista">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada3AgenteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_rg_motoristaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
@@ -303,9 +303,9 @@
                 <Property name="text" type="java.lang.String" value="RG:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada5Agente">
+            <Component class="javax.swing.JTextField" name="cx_in_user_motorista">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada5AgenteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_user_motoristaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -323,7 +323,7 @@
                 <Property name="text" type="java.lang.String" value="Senha:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada4Agente">
+            <Component class="javax.swing.JTextField" name="cx_in_ri_motorista">
             </Component>
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
@@ -346,9 +346,15 @@
                 <Property name="text" type="java.lang.String" value="Repita senha:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="cxEntrada6Agente">
+            <Component class="javax.swing.JPasswordField" name="cx_in_senha_motorista">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_senha_motoristaActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="cxEntrada6Agente1">
+            <Component class="javax.swing.JPasswordField" name="cx_in_repsenha_motorista">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_repsenha_motoristaActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -368,7 +374,7 @@
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="cxEntrada1CadV2" min="-2" pref="161" max="-2" attributes="0"/>
+                              <Component id="cx_in_board_veiculo" min="-2" pref="161" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -387,10 +393,10 @@
                                   </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                          <Component id="cxEntrada1CadV" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
-                                          <Component id="cxEntrada1CadV1" alignment="1" min="-2" pref="161" max="-2" attributes="0"/>
+                                          <Component id="cx_in_assembler_veiculo" alignment="0" min="-2" pref="161" max="-2" attributes="0"/>
+                                          <Component id="cx_in_model_veiculo" alignment="1" min="-2" pref="161" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="cxEntrada1CadV3" alignment="1" min="-2" pref="161" max="-2" attributes="0"/>
+                                      <Component id="cx_in_year_veiculo" alignment="1" min="-2" pref="161" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -404,22 +410,22 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada1CadV" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_assembler_veiculo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada1CadV1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_model_veiculo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada1CadV2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_board_veiculo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cxEntrada1CadV3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cx_in_year_veiculo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
@@ -433,9 +439,9 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="cxEntrada1CadV">
+            <Component class="javax.swing.JTextField" name="cx_in_assembler_veiculo">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada1CadVActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_assembler_veiculoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
@@ -448,9 +454,9 @@
                 <Property name="text" type="java.lang.String" value="Modelo:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada1CadV1">
+            <Component class="javax.swing.JTextField" name="cx_in_model_veiculo">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada1CadV1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_model_veiculoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
@@ -458,9 +464,9 @@
                 <Property name="text" type="java.lang.String" value="Placa:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada1CadV2">
+            <Component class="javax.swing.JTextField" name="cx_in_board_veiculo">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada1CadV2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_board_veiculoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton3">
@@ -484,9 +490,9 @@
                 <Property name="text" type="java.lang.String" value="Ano:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cxEntrada1CadV3">
+            <Component class="javax.swing.JTextField" name="cx_in_year_veiculo">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cxEntrada1CadV3ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cx_in_year_veiculoActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -83,6 +83,7 @@ public class Cadastro {
 // ====== cadastro de motoristas no vetor ======
 
     public void cadastroMotoristas(Motorista recebeMotorista) {
+       
         if (this.qtdMotoristas < motoristas.length) {
             motoristas[qtdMotoristas] = recebeMotorista;
             qtdMotoristas++;
@@ -212,15 +213,21 @@ public class Cadastro {
     }
 
     // ====== verificação de veiculo existente pela placa ======
+    // ****** banco de dados ******
     public String verificarVeiculoPlaca(String placaRecebida) {
-        if (qtdVeiculos > 0) {
-            for (int i = 0; i < qtdVeiculos; i++) {
-                if (veiculos[i].getPlaca().equals(placaRecebida)) {
-                    //if (motoristas[i].getNomeUsuario().equals(motoristaRecebido)) {
-                    return "cadastrado";
-                }
-            }
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Veiculo where placa = ?"; // pesquisa a placa do veiculo no banco de dados
+        try {
+          pst = conexao.prepareStatement(sql);
+          pst.setString(1, placaRecebida);
+          rs = pst.executeQuery();
+          if (rs.next()){
+              return "cadastrado";
+          }
+        } catch (Exception e) {
+            
         }
+      
         return "não cadastrado";
     }
 

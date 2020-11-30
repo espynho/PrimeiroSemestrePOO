@@ -43,6 +43,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
+    // ****** banco de dados ******
     public void comboBoxMenu(){
         comboBoxMenuMotoristas();
         comboBoxMenuVeiculos();
@@ -56,6 +57,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motoristas no menu da tela agente
             }       
         } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
         }
         
     }
@@ -68,8 +70,40 @@ public class TelaPrincipal extends javax.swing.JFrame {
             selecaoAgenteCar.addItem(rs.getString(1)); // adiciona veiculos no menu da tela agente
             }       
         } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
         }   
     }
+     // ****** banco de dados ******
+     public void cadastroMotorista(){
+       String sql = "INSERT into Pessoa (nome,cpf,rg,ri,senha,usuario,cargo) values(?,?,?,?,?,?,?)";
+         try {
+             pst = conexao.prepareStatement(sql);
+             pst.setString(1,cx_in_name_motorista.getText());
+             pst.setString(2,cx_in_cpf_motorista.getText());
+             pst.setString(3,cx_in_rg_motorista.getText());
+             pst.setString(4,cx_in_ri_motorista.getText());
+             pst.setString(5,cx_in_senha_motorista.getText());
+             pst.setString(6,cx_in_user_motorista.getText());
+             pst.setString(7,"motorista");
+             pst.executeUpdate();
+         } catch (Exception e) {
+             JOptionPane.showConfirmDialog(null, e);
+         }
+     }
+       // ****** banco de dados ******
+     public void cadastroVeiculo(){
+       String sql = "insert into Veiculo (montadora, modelo, placa, ano) values(?,?,?,?)";
+         try {
+             pst = conexao.prepareStatement(sql);
+             pst.setString(1,cx_in_assembler_veiculo.getText());
+             pst.setString(2,cx_in_model_veiculo.getText());
+             pst.setString(3,cx_in_board_veiculo.getText());
+             pst.setString(4,cx_in_year_veiculo.getText());
+             pst.executeUpdate();
+         } catch (Exception e) {
+             JOptionPane.showConfirmDialog(null, e);
+         }
+     }
 
     public void statusBancoDeDados() {
         if (conexao != null) {
@@ -117,8 +151,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 // ====== campos somente números ======
 
     public void camposSoNumeros() {
-        cxEntrada1CadV3.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
-        cxEntrada4Agente.setDocument(new SoNumero());
+        cx_in_year_veiculo.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
+        cx_in_ri_motorista.setDocument(new SoNumero());
         cxEntrada2CadM.setDocument(new SoNumero());
         cxEntrada3CadM.setDocument(new SoNumero());
     }
@@ -233,23 +267,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // ====== verificar campos veículos ======
     public void cadastroVeiculos() {
         String placa, resposta;
-        placa = cxEntrada1CadV2.getText();
+        placa = cx_in_board_veiculo.getText();
         resposta = funcoes.verificarVeiculoPlaca(placa); // verifica se a placa já está cadastrada
-        if (cxEntrada1CadV.getText().isEmpty()
-                || cxEntrada1CadV1.getText().isEmpty()
-                || cxEntrada1CadV2.getText().isEmpty()
-                || //Integer.parseInt(cxEntrada1CadV3.getText().isEmpty())){
-                cxEntrada1CadV3.getText().isEmpty()) {
+        if (cx_in_assembler_veiculo.getText().isEmpty()
+                || cx_in_model_veiculo.getText().isEmpty()
+                || cx_in_board_veiculo.getText().isEmpty()
+                || cx_in_year_veiculo.getText().isEmpty()) {
             //System.out.println("Algum campo está vazio");
             janelaErro400();
         } else if (resposta.equals("cadastrado")) {
             //System.out.println("Veículo ja cadastrado");
         } else {
             //Veiculo cadastroveiculo = new Veiculo(cxEntrada1CadV.getText(), cxEntrada1CadV1.getText(),Integer.parseInt(cxEntrada1CadV2.getText()));           
-            Veiculo cadastroveiculo = new Veiculo(cxEntrada1CadV.getText(), cxEntrada1CadV1.getText(), cxEntrada1CadV2.getText(), Integer.parseInt(cxEntrada1CadV3.getText()));
+            //Veiculo cadastroveiculo = new Veiculo(cx_in_assembler_veiculo.getText(), cx_in_model_veiculo.getText(), cx_in_board_veiculo.getText(), Integer.parseInt(cx_in_year_veiculo.getText()));
             //Veiculo cadastroveiculo = new Veiculo(montadora, modelo, placa, ABORT);
-            funcoes.cadastroVeiculos(cadastroveiculo);
-            selecaoAgenteCar.addItem(cxEntrada1CadV2.getText()); // adiciona veiculo no menu da tela agente
+            //funcoes.cadastroVeiculos(cadastroveiculo);
+            cadastroVeiculo();
+            selecaoAgenteCar.addItem(cx_in_board_veiculo.getText()); // adiciona veiculo no menu da tela agente
             //selecaoAgenteCar.addItem(cxEntrada1CadV1.getText()); // adiciona veiculo no menu da tela agente
             limpartelaVeiculos(); // limpa a tela de cadastro de veículos
         }
@@ -258,13 +292,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // ====== limpar tela cadastro motoristas ======
     public void limparTelaMotoristas() {
         String vazio = "";
-        cxEntrada5Agente.setText(vazio);
-        cxEntrada6Agente.setText(vazio);
-        cxEntrada6Agente1.setText(vazio);
-        cxEntrada1Agente.setText(vazio);
-        cxEntrada2Agente.setText(vazio);
-        cxEntrada3Agente.setText(vazio);
-        cxEntrada4Agente.setText(vazio);
+        cx_in_user_motorista.setText(vazio);
+        cx_in_senha_motorista.setText(vazio);
+        cx_in_repsenha_motorista.setText(vazio);
+        cx_in_name_motorista.setText(vazio);
+        cx_in_cpf_motorista.setText(vazio);
+        cx_in_rg_motorista.setText(vazio);
+        cx_in_ri_motorista.setText(vazio);
     }
 
     // ====== limpar tela motorista ======
@@ -276,10 +310,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // ====== limpar tela cadastro veículos ======
     public void limpartelaVeiculos() {
         String vazio = "";
-        cxEntrada1CadV.setText(vazio);
-        cxEntrada1CadV1.setText(vazio);
-        cxEntrada1CadV2.setText(vazio);
-        cxEntrada1CadV3.setText(vazio);
+        cx_in_assembler_veiculo.setText(vazio);
+        cx_in_model_veiculo.setText(vazio);
+        cx_in_board_veiculo.setText(vazio);
+        cx_in_year_veiculo.setText(vazio);
     }
 
     // ====== limpar tela de multas ======
@@ -352,33 +386,33 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         saidaStatus = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        cxEntrada1Agente = new javax.swing.JTextField();
-        cxEntrada2Agente = new javax.swing.JTextField();
-        cxEntrada3Agente = new javax.swing.JTextField();
+        cx_in_name_motorista = new javax.swing.JTextField();
+        cx_in_cpf_motorista = new javax.swing.JTextField();
+        cx_in_rg_motorista = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        cxEntrada5Agente = new javax.swing.JTextField();
+        cx_in_user_motorista = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        cxEntrada4Agente = new javax.swing.JTextField();
+        cx_in_ri_motorista = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        cxEntrada6Agente = new javax.swing.JPasswordField();
-        cxEntrada6Agente1 = new javax.swing.JPasswordField();
+        cx_in_senha_motorista = new javax.swing.JPasswordField();
+        cx_in_repsenha_motorista = new javax.swing.JPasswordField();
         jPanel3 = new javax.swing.JPanel();
-        cxEntrada1CadV = new javax.swing.JTextField();
+        cx_in_assembler_veiculo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        cxEntrada1CadV1 = new javax.swing.JTextField();
+        cx_in_model_veiculo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        cxEntrada1CadV2 = new javax.swing.JTextField();
+        cx_in_board_veiculo = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        cxEntrada1CadV3 = new javax.swing.JTextField();
+        cx_in_year_veiculo = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         selecaoAgenteMot = new javax.swing.JComboBox<>();
         botaoAplicarMulta = new javax.swing.JButton();
@@ -503,21 +537,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         painelDeAbas.addTab("Entrada", jPanel1);
 
-        cxEntrada1Agente.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_name_motorista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada1AgenteActionPerformed(evt);
+                cx_in_name_motoristaActionPerformed(evt);
             }
         });
 
-        cxEntrada2Agente.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_cpf_motorista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada2AgenteActionPerformed(evt);
+                cx_in_cpf_motoristaActionPerformed(evt);
             }
         });
 
-        cxEntrada3Agente.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_rg_motorista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada3AgenteActionPerformed(evt);
+                cx_in_rg_motoristaActionPerformed(evt);
             }
         });
 
@@ -527,9 +561,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel3.setText("RG:");
 
-        cxEntrada5Agente.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_user_motorista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada5AgenteActionPerformed(evt);
+                cx_in_user_motoristaActionPerformed(evt);
             }
         });
 
@@ -555,6 +589,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel14.setText("Repita senha:");
 
+        cx_in_senha_motorista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cx_in_senha_motoristaActionPerformed(evt);
+            }
+        });
+
+        cx_in_repsenha_motorista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cx_in_repsenha_motoristaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -569,15 +615,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addGap(44, 44, 44))
-                            .addComponent(cxEntrada5Agente, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
+                            .addComponent(cx_in_user_motorista, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cxEntrada3Agente, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                            .addComponent(cxEntrada1Agente))))
+                            .addComponent(cx_in_rg_motorista, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                            .addComponent(cx_in_name_motorista))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel14)
@@ -587,10 +633,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cxEntrada6Agente1)
-                        .addComponent(cxEntrada2Agente, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                        .addComponent(cxEntrada4Agente)
-                        .addComponent(cxEntrada6Agente))
+                        .addComponent(cx_in_repsenha_motorista)
+                        .addComponent(cx_in_cpf_motorista, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                        .addComponent(cx_in_ri_motorista)
+                        .addComponent(cx_in_senha_motorista))
                     .addComponent(jButton2))
                 .addContainerGap(158, Short.MAX_VALUE))
         );
@@ -599,26 +645,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada1Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_name_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(cxEntrada2Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cx_in_cpf_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada4Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cxEntrada3Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_ri_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_rg_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(cxEntrada5Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_user_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(cxEntrada6Agente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cx_in_senha_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(cxEntrada6Agente1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cx_in_repsenha_motorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -628,9 +674,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         painelDeAbas.addTab("Cadastro Motoristas", jPanel2);
 
-        cxEntrada1CadV.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_assembler_veiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada1CadVActionPerformed(evt);
+                cx_in_assembler_veiculoActionPerformed(evt);
             }
         });
 
@@ -638,17 +684,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel8.setText("Modelo:");
 
-        cxEntrada1CadV1.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_model_veiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada1CadV1ActionPerformed(evt);
+                cx_in_model_veiculoActionPerformed(evt);
             }
         });
 
         jLabel9.setText("Placa:");
 
-        cxEntrada1CadV2.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_board_veiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada1CadV2ActionPerformed(evt);
+                cx_in_board_veiculoActionPerformed(evt);
             }
         });
 
@@ -668,9 +714,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel10.setText("Ano:");
 
-        cxEntrada1CadV3.addActionListener(new java.awt.event.ActionListener() {
+        cx_in_year_veiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cxEntrada1CadV3ActionPerformed(evt);
+                cx_in_year_veiculoActionPerformed(evt);
             }
         });
 
@@ -682,7 +728,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(cxEntrada1CadV2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cx_in_board_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -698,9 +744,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                                 .addComponent(jButton4))
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cxEntrada1CadV, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cxEntrada1CadV1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(cxEntrada1CadV3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(cx_in_assembler_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cx_in_model_veiculo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cx_in_year_veiculo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(416, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -708,19 +754,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada1CadV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_assembler_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada1CadV1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_model_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada1CadV2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_board_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cxEntrada1CadV3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cx_in_year_veiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1053,32 +1099,33 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cxEntrada1AgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada1AgenteActionPerformed
+    private void cx_in_name_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_name_motoristaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada1AgenteActionPerformed
+    }//GEN-LAST:event_cx_in_name_motoristaActionPerformed
 
-    private void cxEntrada3AgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada3AgenteActionPerformed
+    private void cx_in_rg_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_rg_motoristaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada3AgenteActionPerformed
+    }//GEN-LAST:event_cx_in_rg_motoristaActionPerformed
 
-    private void cxEntrada5AgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada5AgenteActionPerformed
+    private void cx_in_user_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_user_motoristaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada5AgenteActionPerformed
+    }//GEN-LAST:event_cx_in_user_motoristaActionPerformed
 
-    private void cxEntrada2AgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada2AgenteActionPerformed
+    private void cx_in_cpf_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_cpf_motoristaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada2AgenteActionPerformed
+    }//GEN-LAST:event_cx_in_cpf_motoristaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (cxEntrada5Agente.getText().isEmpty() || cxEntrada6Agente.getText().isEmpty() || cxEntrada6Agente1.getText().isEmpty() || cxEntrada1Agente.getText().isEmpty() || cxEntrada2Agente.getText().isEmpty() || cxEntrada3Agente.getText().isEmpty() || cxEntrada4Agente.getText().isEmpty()) {
+        if (cx_in_user_motorista.getText().isEmpty() || cx_in_senha_motorista.getText().isEmpty() || cx_in_repsenha_motorista.getText().isEmpty() || cx_in_name_motorista.getText().isEmpty() || cx_in_cpf_motorista.getText().isEmpty() || cx_in_rg_motorista.getText().isEmpty() || cx_in_ri_motorista.getText().isEmpty()) {
             // System.out.println("Algum campo está vazio");
             janelaErro400();
-        } else if (cxEntrada6Agente.getText().equals(cxEntrada6Agente1.getText())) {
-            Motorista cadastroMotorista = new Motorista(cxEntrada5Agente.getText(), cxEntrada6Agente.getText(), cxEntrada1Agente.getText(), cxEntrada2Agente.getText(), cxEntrada3Agente.getText(), cxEntrada4Agente.getText());
+        } else if (cx_in_senha_motorista.getText().equals(cx_in_repsenha_motorista.getText())) {
+            //Motorista cadastroMotorista = new Motorista(cx_in_user_motorista.getText(), cx_in_senha_motorista.getText(), cx_in_name_motorista.getText(), cx_in_cpf_motorista.getText(), cx_in_rg_motorista.getText(), cx_in_ri_motorista.getText());
             //Motorista cadastroMotorista = new Motorista(nomeUsuario, senhaUsuario, nome, cpf, rg, ri);
-            funcoes.cadastroMotoristas(cadastroMotorista); // método para cadastrar motorista
-            selecaoAgenteMot.addItem(cxEntrada1Agente.getText()); // adiciona motorista no menu da tela agente
+            //funcoes.cadastroMotoristas(cadastroMotorista); // método para cadastrar motorista
+            cadastroMotorista(); // banco de dados
+            selecaoAgenteMot.addItem(cx_in_name_motorista.getText()); // adiciona motorista no menu da tela agente
             limparTelaMotoristas();
             // adiciona motorista no menu da tela agente
         } else {
@@ -1092,18 +1139,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         limparTelaMotoristas();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void cxEntrada1CadVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada1CadVActionPerformed
+    private void cx_in_assembler_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_assembler_veiculoActionPerformed
         // TODO add your handling code here:
         funcoes.veiculosCadastrados();
-    }//GEN-LAST:event_cxEntrada1CadVActionPerformed
+    }//GEN-LAST:event_cx_in_assembler_veiculoActionPerformed
 
-    private void cxEntrada1CadV1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada1CadV1ActionPerformed
+    private void cx_in_model_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_model_veiculoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada1CadV1ActionPerformed
+    }//GEN-LAST:event_cx_in_model_veiculoActionPerformed
 
-    private void cxEntrada1CadV2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada1CadV2ActionPerformed
+    private void cx_in_board_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_board_veiculoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada1CadV2ActionPerformed
+    }//GEN-LAST:event_cx_in_board_veiculoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -1123,9 +1170,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         limpartelaVeiculos();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void cxEntrada1CadV3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxEntrada1CadV3ActionPerformed
+    private void cx_in_year_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_year_veiculoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cxEntrada1CadV3ActionPerformed
+    }//GEN-LAST:event_cx_in_year_veiculoActionPerformed
 
     private void botaoAplicarMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAplicarMultaActionPerformed
         // TODO add your handling code here:
@@ -1217,6 +1264,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_selecaoAgenteMotActionPerformed
 
+    private void cx_in_senha_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_senha_motoristaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cx_in_senha_motoristaActionPerformed
+
+    private void cx_in_repsenha_motoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_repsenha_motoristaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cx_in_repsenha_motoristaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1256,20 +1311,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botaoAplicarMulta;
     private javax.swing.JButton botaoEntrarLogin;
     private javax.swing.JButton botaoSairLogin;
-    private javax.swing.JTextField cxEntrada1Agente;
     private javax.swing.JTextField cxEntrada1CadM;
-    private javax.swing.JTextField cxEntrada1CadV;
-    private javax.swing.JTextField cxEntrada1CadV1;
-    private javax.swing.JTextField cxEntrada1CadV2;
-    private javax.swing.JTextField cxEntrada1CadV3;
-    private javax.swing.JTextField cxEntrada2Agente;
     private javax.swing.JTextField cxEntrada2CadM;
-    private javax.swing.JTextField cxEntrada3Agente;
     private javax.swing.JTextField cxEntrada3CadM;
-    private javax.swing.JTextField cxEntrada4Agente;
-    private javax.swing.JTextField cxEntrada5Agente;
-    private javax.swing.JPasswordField cxEntrada6Agente;
-    private javax.swing.JPasswordField cxEntrada6Agente1;
+    private javax.swing.JTextField cx_in_assembler_veiculo;
+    private javax.swing.JTextField cx_in_board_veiculo;
+    private javax.swing.JTextField cx_in_cpf_motorista;
+    private javax.swing.JTextField cx_in_model_veiculo;
+    private javax.swing.JTextField cx_in_name_motorista;
+    private javax.swing.JPasswordField cx_in_repsenha_motorista;
+    private javax.swing.JTextField cx_in_rg_motorista;
+    private javax.swing.JTextField cx_in_ri_motorista;
+    private javax.swing.JPasswordField cx_in_senha_motorista;
+    private javax.swing.JTextField cx_in_user_motorista;
+    private javax.swing.JTextField cx_in_year_veiculo;
     private javax.swing.JTextField entradaMotoristaAdmin;
     private javax.swing.JTextField entradaMotoristaAdmin2;
     private javax.swing.JTextField entradaNomeLogin;
