@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     Connection conexao = null;
-    //PreparedStatement pst = null;
-    //ResultSet rs = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
 
     Cadastro funcoes = new Cadastro();
     // ====== dados motorista logado ======
@@ -44,10 +44,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 // ====== meus métodos ======
     public void comboBoxMenu(){
-        String item = funcoes.comboBoxMenu();
-       selecaoAgenteMot.addItem(item); // adiciona motorista no menu da tela agente
-   
-        System.out.println(funcoes.comboBoxMenu());
+        String sql = "select nome from Pessoa where cargo='motorista'";
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            //String nome ="";
+            while(rs.next()) {
+            selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motorista no menu da tela agente
+            }       
+        } catch (Exception e) {
+        }
+        
     }
 
     public void statusBancoDeDados() {
@@ -141,8 +148,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 painelDeAbas.setEnabledAt(1, true); // aba cadastro motoristas
                 painelDeAbas.setEnabledAt(2, true); // aba cadastro veiculos
                 painelDeAbas.setEnabledAt(3, true); // aba multas
-                //comboBoxMenu();
-                System.out.println(funcoes.testeContagem());
+                comboBoxMenu();
+                //System.out.println(funcoes.testeContagem());
+                
+                //System.out.println(funcoes.comboBoxMenu());
                 camposSoNumeros();
                 limparTelaLogin();
                 break;

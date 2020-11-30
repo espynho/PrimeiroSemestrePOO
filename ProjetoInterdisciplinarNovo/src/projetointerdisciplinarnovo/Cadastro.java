@@ -245,34 +245,36 @@ public class Cadastro {
     }
 
     public String comboBoxMenu() {
-        String sql = "select nome, count(*) from Pessoa where cargo='motorista'";
+        String sql = "select nome from Pessoa where cargo='motorista'";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            if (rs.next()) {   
-               String nome = rs.getString(1);
-                return nome;
+            //String nome ="";
+            while(rs.next()) {
+                //System.out.println(rs.getString(1));
+                return rs.getString(1);
             }
+                //return "ok";
         } catch (Exception e) {
         }
         return null;
     }
-    public int testeContagem(){
-         String sql = "select nome, count(*) from Pessoa where cargo='motorista'";
+
+    public int testeContagem() {
+        String sql = "select nome from Pessoa where cargo='motorista'";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
             int cont = 0;
-            if (rs.next()) {   
-              for(int i = 0; i < rs.getInt(2); i++){
-                  cont += i;
-              }
-                return cont;
+            while (rs.next()) {
+                cont++;
             }
+            return cont;
         } catch (Exception e) {
         }
         return 0;
     }
+
     // ====== verificação para login ======
     public String nomeMotoristaCadastrado(String motRecebido) {
         String nomeUsuario = "";
