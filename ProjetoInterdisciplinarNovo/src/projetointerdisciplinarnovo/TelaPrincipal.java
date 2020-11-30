@@ -39,84 +39,107 @@ public class TelaPrincipal extends javax.swing.JFrame {
         travarAbas();
         conexao = ModuloDeConexao.conector();
         statusBancoDeDados();
+        System.out.println(funcoes.verificarMulta("Velocidade"));
+        System.out.println(funcoes.verificarMotorista("Fábio Pereira Reis"));
+        System.out.println(funcoes.verificarVeiculo("JPT-6666"));
 
         //System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
     // ****** banco de dados ******
-    public void comboBoxMenu(){
+
+    public void comboBoxMenu() {
         comboBoxMenuMotoristas();
         comboBoxMenuVeiculos();
+        comboBoxMenuMultas();
     }
-    public void comboBoxMenuMotoristas(){
+
+    public void comboBoxMenuMotoristas() {
         String sql = "select nome from Pessoa where cargo='motorista'";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            while(rs.next()) {
-            selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motoristas no menu da tela agente
-            }       
+            while (rs.next()) {
+                selecaoAgenteMot.addItem(rs.getString(1)); // adiciona motoristas no menu da tela agente
+            }
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
-        
+
     }
-     public void comboBoxMenuVeiculos(){
+
+    public void comboBoxMenuVeiculos() {
         String sql = "select placa from Veiculo";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            while(rs.next()) {
-            selecaoAgenteCar.addItem(rs.getString(1)); // adiciona veiculos no menu da tela agente
-            }       
+            while (rs.next()) {
+                selecaoAgenteCar.addItem(rs.getString(1)); // adiciona veiculos no menu da tela agente
+            }
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
-        }   
+        }
     }
-     // ****** banco de dados ******
-     public void cadastroMotorista(){
-       String sql = "INSERT into Pessoa (nome,cpf,rg,ri,senha,usuario,cargo) values(?,?,?,?,?,?,?)";
-         try {
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1,cx_in_name_motorista.getText());
-             pst.setString(2,cx_in_cpf_motorista.getText());
-             pst.setString(3,cx_in_rg_motorista.getText());
-             pst.setString(4,cx_in_ri_motorista.getText());
-             pst.setString(5,cx_in_senha_motorista.getText());
-             pst.setString(6,cx_in_user_motorista.getText());
-             pst.setString(7,"motorista");
-             pst.executeUpdate();
-         } catch (Exception e) {
-             JOptionPane.showConfirmDialog(null, e);
-         }
-     }
-       // ****** banco de dados ******
-     public void cadastroVeiculo(){
-       String sql = "insert into Veiculo (montadora, modelo, placa, ano) values(?,?,?,?)";
-         try {
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1,cx_in_assembler_veiculo.getText());
-             pst.setString(2,cx_in_model_veiculo.getText());
-             pst.setString(3,cx_in_board_veiculo.getText());
-             pst.setString(4,cx_in_year_veiculo.getText());
-             pst.executeUpdate();
-         } catch (Exception e) {
-             JOptionPane.showConfirmDialog(null, e);
-         }
-     }
-        // ****** banco de dados ******
-     public void cadastroMulta(){
-       String sql = "insert into Multa (descricao, pontuacao, valor) values(?,?,?)";
-         try {
-             pst = conexao.prepareStatement(sql);
-             pst.setString(1,cx_in_description_multa.getText());
-             pst.setString(2,cx_in_punctuation_multa.getText());
-             pst.setString(3,cx_in_value_multa.getText());
-             pst.executeUpdate();
-         } catch (Exception e) {
-             JOptionPane.showConfirmDialog(null, e);
-         }
-     }
+
+    public void comboBoxMenuMultas() {
+        String sql = "select descricao from Multa";
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                selecaoAgenteMul.addItem(rs.getString(1)); // adiciona veiculos no menu da tela agente
+            }
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+    // ****** banco de dados ******
+
+    public void cadastroMotorista() {
+        String sql = "INSERT into Pessoa (nome,cpf,rg,ri,senha,usuario,cargo) values(?,?,?,?,?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, cx_in_name_motorista.getText());
+            pst.setString(2, cx_in_cpf_motorista.getText());
+            pst.setString(3, cx_in_rg_motorista.getText());
+            pst.setString(4, cx_in_ri_motorista.getText());
+            pst.setString(5, cx_in_senha_motorista.getText());
+            pst.setString(6, cx_in_user_motorista.getText());
+            pst.setString(7, "motorista");
+            pst.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+    // ****** banco de dados ******
+
+    public void cadastroVeiculo() {
+        String sql = "insert into Veiculo (montadora, modelo, placa, ano) values(?,?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, cx_in_assembler_veiculo.getText());
+            pst.setString(2, cx_in_model_veiculo.getText());
+            pst.setString(3, cx_in_board_veiculo.getText());
+            pst.setString(4, cx_in_year_veiculo.getText());
+            pst.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+    // ****** banco de dados ******
+
+    public void cadastroMulta() {
+        String sql = "insert into Multa (descricao, pontuacao, valor) values(?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, cx_in_description_multa.getText());
+            pst.setString(2, cx_in_punctuation_multa.getText());
+            pst.setString(3, cx_in_value_multa.getText());
+            pst.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
 
     public void statusBancoDeDados() {
         if (conexao != null) {
@@ -172,22 +195,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
 // ====== aplicação de multas ======
 
     public void aplicacaoMulta() {
-        //System.out.println(selecaoAgenteMot.getSelectedItem()); // objeto selecionado motorista
-        //System.out.println(selecaoAgenteCar.getSelectedItem()); // objeto selecionado carro
-        //System.out.println(selecaoAgenteMul.getSelectedItem()); // objeto selecionado multa
         String modelo = (String) selecaoAgenteCar.getSelectedItem();// netBeans completou o código
         String nome = (String) selecaoAgenteMot.getSelectedItem();// netBeans completou o código
         String descricao = (String) selecaoAgenteMul.getSelectedItem();// netBeans completou o código
         if (modelo.equals("Selecione um veiculo") || nome.equals("Selecione um motorista")
                 || descricao.equals("Selecione uma Multa")) {
-            //System.out.println("Falta dados, tente novamente");
             janelaErro400();
         } else {
-            Multa tomada = funcoes.verificarMulta(descricao); // verificar se a multa está cadastrada
-            Motorista motoristaMultado = funcoes.verificarMotorista(nome); // verificar se o motorista está cadastrado
-            Veiculo veiculoMultado = funcoes.verificarVeiculo(modelo); // verificar se o veiculo está cadastrado
-            motoristaMultado.cadastroMultaMotorista(tomada, veiculoMultado);
-            valorDasMultas += tomada.getValor();
+            int idMulta = funcoes.verificarMulta(descricao); // verificar se a multa está cadastrada
+            int idMotorista = funcoes.verificarMotorista(nome); // verificar se o motorista está cadastrado
+            int idVeiculo = funcoes.verificarVeiculo(modelo); // verificar se o veiculo está cadastrado
+            funcoes.aplicarMulta(idMotorista, idVeiculo, idMulta);
             qtdMultasEmpresa++;
             limparTelaMultas();
         }
@@ -211,7 +229,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 painelDeAbas.setEnabledAt(3, true); // aba multas
                 comboBoxMenu();
                 //System.out.println(funcoes.testeContagem());
-                
+
                 //System.out.println(funcoes.comboBoxMenu());
                 camposSoNumeros();
                 limparTelaLogin();
@@ -236,6 +254,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 janelaErro401();
         }
     }
+
     // ====== mostrando motorista logado ======
     public void motoristaLogado(String nomeRecebidoLogin) {
         System.out.println("Nome usuario recebido da função login: " + nomeRecebidoLogin);
@@ -1233,11 +1252,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
         //System.out.println(nomeMotoristaLogado);
-        String dados;
-        Motorista motoristaDados = funcoes.verificarMotorista(nomeMotoristaLogado); // retorna um motorista cadastrado
-        dados = motoristaDados.multasTomadas();
-        System.out.println(dados);
-        saidaTextoMotorista.setText(dados);
+        //String dados;
+        //Motorista motoristaDados = funcoes.verificarMotorista(nomeMotoristaLogado); // retorna um motorista cadastrado
+        //dados = motoristaDados.multasTomadas();
+        // System.out.println(dados);
+        //saidaTextoMotorista.setText(dados);
         // motoristaDados.multasTomadas(); 
     }//GEN-LAST:event_jButton10ActionPerformed
 

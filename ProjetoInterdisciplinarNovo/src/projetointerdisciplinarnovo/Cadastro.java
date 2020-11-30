@@ -83,7 +83,7 @@ public class Cadastro {
 // ====== cadastro de motoristas no vetor ======
 
     public void cadastroMotoristas(Motorista recebeMotorista) {
-       
+
         if (this.qtdMotoristas < motoristas.length) {
             motoristas[qtdMotoristas] = recebeMotorista;
             qtdMotoristas++;
@@ -162,42 +162,60 @@ public class Cadastro {
 
     // ====== aplicação de multa ======
     // ------ verificação de multa existente ------
-    public Multa verificarMulta(String multaRecebida) {
-        if (qtdMultas > 0) {
-            for (int i = 0; i < qtdMultas; i++) {
-                if (multas[i].getDescricao().equals(multaRecebida)) {
-                    return multas[i];
-                }
+    // ****** banco de dados ******
+    public int verificarMulta(String multaRecebida) {
+
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Multa where descricao = ?"; // pesquisa descrição da multa no banco de dados
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, multaRecebida);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                //int id = rs.getInt(1); // variavel recebendo dados da tabela no campo 1
+                return rs.getInt(1);
             }
+        } catch (Exception e) {
+
         }
-        return null;
+        return 0;
     }
 
     // ====== verificação de motorista existente pelo nome ======
-    public Motorista verificarMotorista(String motoristaRecebido) {
-        if (qtdMotoristas > 0) {
-            for (int i = 0; i < qtdMotoristas; i++) {
-                if (motoristas[i].getNome().equals(motoristaRecebido)) {
-                    //if (motoristas[i].getNomeUsuario().equals(motoristaRecebido)) {
-                    return motoristas[i];
-                }
+    public int verificarMotorista(String motoristaRecebido) {
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Pessoa where nome = ? and cargo ='motorista'"; // pesquisa o nome dos motoristas no banco de dados
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, motoristaRecebido);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                //int id = rs.getInt(1); // variavel recebendo dados da tabela no campo 1
+                return rs.getInt(1);
             }
+        } catch (Exception e) {
+
         }
-        return null;
+        return 0;
     }
 
     // ====== verificação de veiculo existente pela descrição ======
-    public Veiculo verificarVeiculo(String veiculoRecebido) {
-        if (qtdVeiculos > 0) {
-            for (int i = 0; i < qtdVeiculos; i++) {
-                //if (veiculos[i].getModelo().equals(veiculoRecebido)) {
-                if (veiculos[i].getPlaca().equals(veiculoRecebido)) {
-                    //if (motoristas[i].getNomeUsuario().equals(motoristaRecebido)) {
-                    return veiculos[i];
-                }
+    // ****** banco de dados ******
+    public int verificarVeiculo(String veiculoRecebido) {
+        conexao = ModuloDeConexao.conector();
+        String sql = "select * from Veiculo where placa = ? "; // pesquisa a placa no banco de dados
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, veiculoRecebido);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+
+                return rs.getInt(1);
             }
+        } catch (Exception e) {
+
         }
-        return null;
+        return 0;
     }
 
     // ====== verificação de veiculo existente pela placa ======
@@ -206,16 +224,16 @@ public class Cadastro {
         conexao = ModuloDeConexao.conector();
         String sql = "select * from Veiculo where placa = ?"; // pesquisa a placa do veiculo no banco de dados
         try {
-          pst = conexao.prepareStatement(sql);
-          pst.setString(1, placaRecebida);
-          rs = pst.executeQuery();
-          if (rs.next()){
-              return "cadastrado";
-          }
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, placaRecebida);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                return "cadastrado";
+            }
         } catch (Exception e) {
-            
+
         }
-      
+
         return "não cadastrado";
     }
 
@@ -237,6 +255,24 @@ public class Cadastro {
             JOptionPane.showMessageDialog(null, e);
         }
         return null;
+    }
+
+    // ====== aplicação da multa ======
+    // ****** banco de dados ******
+    public void aplicarMulta(int id_motorista, int id_veiculo, int id_multa) {
+        conexao = ModuloDeConexao.conector();
+        String sql = "INSERT into AplicarMulta "
+                + "(motorista_multado, veiculo_multado, multa_aplicada)"
+                + "values (?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id_motorista);
+            pst.setInt(2, id_veiculo);
+            pst.setInt(3, id_multa);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
     }
 
     // ====== verificação para login ======
