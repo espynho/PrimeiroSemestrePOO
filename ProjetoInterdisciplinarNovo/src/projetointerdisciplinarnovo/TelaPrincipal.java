@@ -48,6 +48,40 @@ public class TelaPrincipal extends javax.swing.JFrame {
 // ====== meus métodos ======
     // ****** banco de dados ******
 
+    public void multasTomadasMotorista(String recebeMotorista) {
+        String resultado = "";
+        boolean temMulta = false;
+        resultado += "Modelo - Placa - Descrição - Pontuação\n";
+        String sql = "-- pesquisa multas motorista\n"
+                + "select v.modelo, v.placa, m.descricao, m.pontuacao, am.`data` from AplicarMulta am \n"
+                + "join Pessoa p \n"
+                + "on am.motorista_multado = p.id\n"
+                + "join Veiculo v \n"
+                + "on am.veiculo_multado = v.id \n"
+                + "join Multa m \n"
+                + "on am.multa_aplicada = m.id \n"
+                + "WHERE p.cargo ='motorista'"
+                + " and p.usuario = ? ;";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1,recebeMotorista);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                temMulta = true;
+                //saidaTextoMotorista.setText("Modelo - Placa - Descrição - Pontuação");
+                //System.out.println("Modelo - Placa - Descrição - Pontuação");
+                resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + "\n");
+            }
+            if (temMulta) {
+                saidaTextoMotorista.setText(resultado);
+            } else {
+                saidaTextoMotorista.setText("Parabens você não tem multas");
+            }
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+
     public void comboBoxMenu() {
         comboBoxMenuMotoristas();
         comboBoxMenuVeiculos();
@@ -65,7 +99,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
-
     }
 
     public void comboBoxMenuVeiculos() {
@@ -93,8 +126,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(null, e);
         }
     }
-    // ****** banco de dados ******
 
+    // ****** banco de dados ******
     public void cadastroMotorista() {
         String sql = "INSERT into Pessoa (nome,cpf,rg,ri,senha,usuario,cargo) values(?,?,?,?,?,?,?)";
         try {
@@ -107,12 +140,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             pst.setString(6, cx_in_user_motorista.getText());
             pst.setString(7, "motorista");
             pst.executeUpdate();
+            selecaoAgenteMot.addItem(cx_in_name_motorista.getText()); // adiciona motorista no menu da tela agente
+            limparTelaMotoristas();
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
     }
-    // ****** banco de dados ******
 
+    // ****** banco de dados ******
     public void cadastroVeiculo() {
         String sql = "insert into Veiculo (montadora, modelo, placa, ano) values(?,?,?,?)";
         try {
@@ -122,12 +157,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             pst.setString(3, cx_in_board_veiculo.getText());
             pst.setString(4, cx_in_year_veiculo.getText());
             pst.executeUpdate();
+            selecaoAgenteCar.addItem(cx_in_board_veiculo.getText()); // adiciona veiculo no menu da tela agente
+            limpartelaVeiculos(); // limpa a tela de cadastro de veículos
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
     }
-    // ****** banco de dados ******
 
+    // ****** banco de dados ******
     public void cadastroMulta() {
         String sql = "insert into Multa (descricao, pontuacao, valor) values(?,?,?)";
         try {
@@ -136,6 +173,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             pst.setString(2, cx_in_punctuation_multa.getText());
             pst.setString(3, cx_in_value_multa.getText());
             pst.executeUpdate();
+            selecaoAgenteMul.addItem(cx_in_description_multa.getText()); // adiciona a multa no menu 
+            limparTelaMultas1();
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);
         }
@@ -176,16 +215,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "As senhas digitadas não são iguais", erro, JOptionPane.INFORMATION_MESSAGE);
     }
-// ====== adiciona itens iniciais no menus de multas ======
-
-    public void cadastroFixo() {
-        String motorista0 = funcoes.motoristaFixo();
-        selecaoAgenteMot.addItem(motorista0); // adiciona motorista no menu da tela agente
-        String veiculo0 = funcoes.veiculoFixo();
-        selecaoAgenteCar.addItem(veiculo0); // adiciona motorista no menu da tela agente
-    }
 // ====== campos somente números ======
-
     public void camposSoNumeros() {
         cx_in_year_veiculo.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
         cx_in_ri_motorista.setDocument(new SoNumero());
@@ -193,7 +223,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cx_in_punctuation_multa.setDocument(new SoNumero());
     }
 // ====== aplicação de multas ======
-
+    // ****** banco de dados ******
     public void aplicacaoMulta() {
         String modelo = (String) selecaoAgenteCar.getSelectedItem();// netBeans completou o código
         String nome = (String) selecaoAgenteMot.getSelectedItem();// netBeans completou o código
@@ -212,6 +242,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // ====== checagem dados da aba login ======
+    // ****** banco de dados ******
     public void checagemDeDadosLogin() {
         String nomeDigitado = entradaNomeLogin.getText();
         String senhaDigitado = entradaSenhaLogin.getText();
@@ -220,6 +251,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             case 1:
                 System.out.println("Motorista logado");
                 painelDeAbas.setEnabledAt(4, true); // aba motorista
+                nomeMotoristaLogado = nomeDigitado;
                 limparTelaLogin();
                 break;
             case 2:
@@ -315,9 +347,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //Veiculo cadastroveiculo = new Veiculo(montadora, modelo, placa, ABORT);
             //funcoes.cadastroVeiculos(cadastroveiculo);
             cadastroVeiculo();
-            selecaoAgenteCar.addItem(cx_in_board_veiculo.getText()); // adiciona veiculo no menu da tela agente
+            //selecaoAgenteCar.addItem(cx_in_board_veiculo.getText()); // adiciona veiculo no menu da tela agente
             //selecaoAgenteCar.addItem(cxEntrada1CadV1.getText()); // adiciona veiculo no menu da tela agente
-            limpartelaVeiculos(); // limpa a tela de cadastro de veículos
+            //limpartelaVeiculos(); // limpa a tela de cadastro de veículos
         }
     }
 
@@ -1157,8 +1189,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //Motorista cadastroMotorista = new Motorista(nomeUsuario, senhaUsuario, nome, cpf, rg, ri);
             //funcoes.cadastroMotoristas(cadastroMotorista); // método para cadastrar motorista
             cadastroMotorista(); // banco de dados
-            selecaoAgenteMot.addItem(cx_in_name_motorista.getText()); // adiciona motorista no menu da tela agente
-            limparTelaMotoristas();
+            //selecaoAgenteMot.addItem(cx_in_name_motorista.getText()); // adiciona motorista no menu da tela agente
+            //limparTelaMotoristas();
             // adiciona motorista no menu da tela agente
         } else {
             // System.out.println("Senhas não são iguais");
@@ -1229,8 +1261,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //Multa cadastromulta = new Multa(descricao, TOP_ALIGNMENT, NORMAL));
             //funcoes.cadastroMultas(cadastromulta);
             cadastroMulta();
-            selecaoAgenteMul.addItem(cx_in_description_multa.getText()); // adiciona a multa no menu 
-            limparTelaMultas1();
+            //selecaoAgenteMul.addItem(cx_in_description_multa.getText()); // adiciona a multa no menu 
+            //limparTelaMultas1();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -1251,13 +1283,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-        //System.out.println(nomeMotoristaLogado);
-        //String dados;
-        //Motorista motoristaDados = funcoes.verificarMotorista(nomeMotoristaLogado); // retorna um motorista cadastrado
-        //dados = motoristaDados.multasTomadas();
-        // System.out.println(dados);
-        //saidaTextoMotorista.setText(dados);
-        // motoristaDados.multasTomadas(); 
+        System.out.println(nomeMotoristaLogado);
+        multasTomadasMotorista(nomeMotoristaLogado);         
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed

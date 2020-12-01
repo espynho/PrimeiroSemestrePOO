@@ -182,6 +182,7 @@ public class Cadastro {
     }
 
     // ====== verificação de motorista existente pelo nome ======
+    // ****** banco de dados ******
     public int verificarMotorista(String motoristaRecebido) {
         conexao = ModuloDeConexao.conector();
         String sql = "select * from Pessoa where nome = ? and cargo ='motorista'"; // pesquisa o nome dos motoristas no banco de dados
