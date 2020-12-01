@@ -64,7 +64,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 + " and p.usuario = ? ;";
         try {
             pst = conexao.prepareStatement(sql);
-            pst.setString(1,recebeMotorista);
+            pst.setString(1, recebeMotorista);
             rs = pst.executeQuery();
             while (rs.next()) {
                 temMulta = true;
@@ -216,6 +216,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(login, "As senhas digitadas não são iguais", erro, JOptionPane.INFORMATION_MESSAGE);
     }
 // ====== campos somente números ======
+
     public void camposSoNumeros() {
         cx_in_year_veiculo.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
         cx_in_ri_motorista.setDocument(new SoNumero());
@@ -224,6 +225,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 // ====== aplicação de multas ======
     // ****** banco de dados ******
+
     public void aplicacaoMulta() {
         String modelo = (String) selecaoAgenteCar.getSelectedItem();// netBeans completou o código
         String nome = (String) selecaoAgenteMot.getSelectedItem();// netBeans completou o código
@@ -402,30 +404,91 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // ====== dados gerente ======
-    public void dadosGerente() {
-        if (selecaoGerente.getSelectedItem().equals("Veiculos")) {
-            //funcoes.veiculosCadastrados();
-            String veiculos;
-            veiculos = funcoes.veiculosCadastradosRetorno();
-            saidaGerente.setText(veiculos);
-        }
-        if (selecaoGerente.getSelectedItem().equals("Motoristas")) {
-            //funcoes.motoristasCadastrados();
-            String motoristas;
-            motoristas = funcoes.motoristasCadastradosRetorno();
-            saidaGerente.setText(motoristas);
-        }
-        if (selecaoGerente.getSelectedItem().equals("Multas")) {
-            String multasEmpresaLog = "";
-            saidaGerente.setText(multasEmpresaLog);
-            if (qtdMultasEmpresa > 1) {
-                saidaGerente.setText("A empresa tem " + qtdMultasEmpresa + " multas \nno valor total de R$: " + valorDasMultas);
-            } else if (qtdMultasEmpresa == 1) {
-                saidaGerente.setText("A empresa tem " + qtdMultasEmpresa + " multa \nno valor total de R$: " + valorDasMultas);
-            } else {
-                saidaGerente.setText("A empresa não tem multas");
+    public void descricaoVeiculos() {
+        String resultado = "";
+        String sql = "SELECT * from Veiculo";
+        boolean temVeiculo = false;
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                temVeiculo = true;
+                resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + "\n");
             }
-            //System.out.println(valorTotalMultas());
+            if (temVeiculo) {
+                saidaGerente.setText(resultado);
+            } else {
+                saidaTextoMotorista.setText("Sem veiculos cadastrados no sistema");
+            }
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+
+    public void descricaoMotorista() {
+        String resultado = "";
+        resultado += "Nome do motorista - Registro interno" + "\n";
+        String sql = "select nome, ri from Pessoa where cargo='motorista'";
+        boolean temMotorista = false;
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                temMotorista = true;
+                resultado += (rs.getString(1) + " - " + rs.getString(2) + "\n");
+            }
+            if (temMotorista) {
+                saidaGerente.setText(resultado);
+            } else {
+                saidaTextoMotorista.setText("Sem motoristas cadastrados no sistema");
+            }
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+
+    public void descricaoMulta() {
+        boolean temMulta = false;
+        String resultado = "";
+        resultado += "Modelo - Placa - Descrição - Valor - Data " + "\n";
+        String sql = "select v.modelo, v.placa, m.descricao, m.valor , am.`data` from AplicarMulta am \n"
+                + "join Pessoa p \n"
+                + "on am.motorista_multado = p.id\n"
+                + "join Veiculo v \n"
+                + "on am.veiculo_multado = v.id \n"
+                + "join Multa m \n"
+                + "on am.multa_aplicada = m.id ";
+ 
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                temMulta = true;
+                resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + " - " + rs.getString(5) + "\n");
+            }
+            if (temMulta) {
+                saidaGerente.setText(resultado);
+            }else{
+                saidaGerente.setText("Os veiculos da empresa não tem multas");
+            }
+  
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+        }
+    }
+
+    public void dadosGerente() {
+        String selecao = (String) selecaoGerente.getSelectedItem();
+        switch (selecao) {
+            case "Veiculos":
+                descricaoVeiculos();
+                break;
+            case "Motoristas":
+                descricaoMotorista();
+                break;
+            case "Multas":
+                descricaoMulta();
+                break;
         }
     }
 
@@ -1284,12 +1347,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
         System.out.println(nomeMotoristaLogado);
-        multasTomadasMotorista(nomeMotoristaLogado);         
+        multasTomadasMotorista(nomeMotoristaLogado);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
         dadosGerente();
+
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void botaoSairLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairLoginActionPerformed
