@@ -29,7 +29,6 @@ public class Cadastro {
             pst.setString(1, multaRecebida);
             rs = pst.executeQuery();
             if (rs.next()) {
-                //int id = rs.getInt(1); // variavel recebendo dados da tabela no campo 1
                 return rs.getInt(1);
             }
         } catch (Exception e) {
@@ -48,7 +47,6 @@ public class Cadastro {
             pst.setString(1, motoristaRecebido);
             rs = pst.executeQuery();
             if (rs.next()) {
-                //int id = rs.getInt(1); // variavel recebendo dados da tabela no campo 1
                 return rs.getInt(1);
             }
         } catch (Exception e) {

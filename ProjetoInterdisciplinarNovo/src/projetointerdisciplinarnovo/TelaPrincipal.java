@@ -20,7 +20,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-
     Cadastro funcoes = new Cadastro();
     // ====== dados motorista logado ======
     String nomeMotoristaLogado;
@@ -30,17 +29,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
-        //cxEntrada1CadV3.setDocument(new SoNumero()); // para o campo ano carro só aceitar números, senão da erro.
-        //funcoes.usuariosFixos();
-        //cadastroFixo();
         travarAbas();
         conexao = ModuloDeConexao.conector();
         statusBancoDeDados();
-        System.out.println(funcoes.verificarMulta("Velocidade"));
-        System.out.println(funcoes.verificarMotorista("Fábio Pereira Reis"));
-        System.out.println(funcoes.verificarVeiculo("JPT-6666"));
-
-        //System.out.println("Status: " + conexao);
     }
 // ====== meus métodos ======
     // ****** banco de dados ******
@@ -65,8 +56,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             rs = pst.executeQuery();
             while (rs.next()) {
                 temMulta = true;
-                //saidaTextoMotorista.setText("Modelo - Placa - Descrição - Pontuação");
-                //System.out.println("Modelo - Placa - Descrição - Pontuação");
                 resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + "\n");
             }
             if (temMulta) {
@@ -198,15 +187,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "Usuário ou senha inválidos", erro, JOptionPane.INFORMATION_MESSAGE);
     }
-    // ====== janela erro 402 senha veiculo ja cadastrado =====
 
+    // ====== janela erro 402 senha veiculo ja cadastrado =====
     public void janelaErro402() {
         String erro = "Erro 402";
         JFrame login = new JFrame("janela");
         JOptionPane.showMessageDialog(login, "Veículo ja cadastrado", erro, JOptionPane.INFORMATION_MESSAGE);
     }
-    // ====== janela erro 403 senhas não são iguais =====
 
+    // ====== janela erro 403 senhas não são iguais =====
     public void janelaErro403() {
         String erro = "Erro 402";
         JFrame login = new JFrame("janela");
@@ -290,8 +279,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         System.out.println("Nome usuario recebido da função login: " + nomeRecebidoLogin);
         funcoes.verificarMotoristaCadastrado(nomeRecebidoLogin);
     }
-
     // ====== travar todas abas ======
+
     public void travarAbas() {
         painelDeAbas.setEnabledAt(1, false); // aba cadastro motoristas
         painelDeAbas.setEnabledAt(2, false); // aba cadastro veiculos
@@ -309,8 +298,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         entradaSenhaLogin.setEditable(false);
         botaoEntrarLogin.setEnabled(false);
     }
-    // ====== liberar tela login ======
 
+    // ====== liberar tela login ======
     public void liberarTelaLogin() {
         entradaNomeLogin.setEditable(true);
         entradaSenhaLogin.setEditable(true);
@@ -464,7 +453,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     + "on am.veiculo_multado = v.id \n"
                     + "join Multa m \n"
                     + "on am.multa_aplicada = m.id ";
-
             try {
                 pst = conexao.prepareStatement(sql);
                 rs = pst.executeQuery();
@@ -1253,15 +1241,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             // System.out.println("Algum campo está vazio");
             janelaErro400();
         } else if (cx_in_senha_motorista.getText().equals(cx_in_repsenha_motorista.getText())) {
-            //Motorista cadastroMotorista = new Motorista(cx_in_user_motorista.getText(), cx_in_senha_motorista.getText(), cx_in_name_motorista.getText(), cx_in_cpf_motorista.getText(), cx_in_rg_motorista.getText(), cx_in_ri_motorista.getText());
-            //Motorista cadastroMotorista = new Motorista(nomeUsuario, senhaUsuario, nome, cpf, rg, ri);
-            //funcoes.cadastroMotoristas(cadastroMotorista); // método para cadastrar motorista
-            cadastroMotorista(); // banco de dados
-            //selecaoAgenteMot.addItem(cx_in_name_motorista.getText()); // adiciona motorista no menu da tela agente
-            //limparTelaMotoristas();
-            // adiciona motorista no menu da tela agente
+            cadastroMotorista(); // banco de dados          
         } else {
-            // System.out.println("Senhas não são iguais");
             janelaErro403();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -1287,16 +1268,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         cadastroVeiculos();
-    }
-
-    /*        
-        //Veiculo cadastroveiculo = new Veiculo(cxEntrada1CadV.getText(), cxEntrada1CadV1.getText(),Integer.parseInt(cxEntrada1CadV2.getText()));           
-        Veiculo cadastroveiculo = new Veiculo(cxEntrada1CadV.getText(), cxEntrada1CadV1.getText(), cxEntrada1CadV2.getText(), Integer.parseInt(cxEntrada1CadV3.getText()));
-        //Veiculo cadastroveiculo = new Veiculo(montadora, modelo, placa, ABORT);
-        funcoes.cadastroVeiculos(cadastroveiculo);
-        selecaoAgenteCar.addItem(cxEntrada1CadV1.getText()); // adiciona veiculo no menu da tela agente
     }//GEN-LAST:event_jButton3ActionPerformed
-*/
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         limpartelaVeiculos();
@@ -1324,13 +1297,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //System.out.println("Preencha todos os campos");
             janelaErro400();
         } else {
-            //Multa cadastromulta = new Multa(cxEntrada1CadM.getText(), Integer.parseInt(cxEntrada2CadM.getText()),Integer.parseInt(cxEntrada3CadM.getText()));
-            //Multa cadastromulta = new Multa(cx_in_description_multa.getText(), Float.valueOf(cx_in_value_multa.getText()), Integer.parseInt(cx_in_punctuation_multa.getText()));
-            //Multa cadastromulta = new Multa(descricao, TOP_ALIGNMENT, NORMAL));
-            //funcoes.cadastroMultas(cadastromulta);
             cadastroMulta();
-            //selecaoAgenteMul.addItem(cx_in_description_multa.getText()); // adiciona a multa no menu 
-            //limparTelaMultas1();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -1342,7 +1309,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void botaoEntrarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarLoginActionPerformed
         // TODO add your handling code here:
         if (entradaNomeLogin.getText().isEmpty() || entradaSenhaLogin.getText().isEmpty()) {
-            //System.out.println("Campos vazios");
             janelaErro400();
         } else {
             checagemDeDadosLogin();
