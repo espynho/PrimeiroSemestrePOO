@@ -24,9 +24,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Cadastro funcoes = new Cadastro();
     // ====== dados motorista logado ======
     String nomeMotoristaLogado;
-    // ====== valor das multas tomadas ======
-    private float valorDasMultas = 0f; // valor das multas da empresa
-    private int qtdMultasEmpresa = 0;
 
     /**
      * Creates new form TelaPrincipal
@@ -238,7 +235,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             int idMotorista = funcoes.verificarMotorista(nome); // verificar se o motorista está cadastrado
             int idVeiculo = funcoes.verificarVeiculo(modelo); // verificar se o veiculo está cadastrado
             funcoes.aplicarMulta(idMotorista, idVeiculo, idMulta);
-            qtdMultasEmpresa++;
             limparTelaMultas();
         }
     }
@@ -293,15 +289,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public void motoristaLogado(String nomeRecebidoLogin) {
         System.out.println("Nome usuario recebido da função login: " + nomeRecebidoLogin);
         funcoes.verificarMotoristaCadastrado(nomeRecebidoLogin);
-    }
-
-    // ====== mostrar valor de todas multas da empresa ======
-    public String valorTotalMultas() {
-        if (valorDasMultas > 0) {
-            return "Valor das multas: " + valorDasMultas;
-        } else {
-            return "A empresa não tem multas";
-        }
     }
 
     // ====== travar todas abas ======
@@ -447,33 +434,51 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    public void descricaoMulta() {
-        boolean temMulta = false;
-        String resultado = "";
-        resultado += "Modelo - Placa - Descrição - Valor - Data " + "\n";
-        String sql = "select v.modelo, v.placa, m.descricao, m.valor , am.`data` from AplicarMulta am \n"
-                + "join Pessoa p \n"
-                + "on am.motorista_multado = p.id\n"
-                + "join Veiculo v \n"
-                + "on am.veiculo_multado = v.id \n"
-                + "join Multa m \n"
-                + "on am.multa_aplicada = m.id ";
- 
+    public int multasTomadas() {
+        String sql = "select sum(m.valor) from AplicarMulta am join Multa m\n"
+                + "on am.multa_aplicada = m.id  ;";
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            while (rs.next()) {
-                temMulta = true;
-                resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + " - " + rs.getString(5) + "\n");
+            if (rs.next()) {
+                return rs.getInt(1);
             }
-            if (temMulta) {
-                saidaGerente.setText(resultado);
-            }else{
-                saidaGerente.setText("Os veiculos da empresa não tem multas");
-            }
-  
         } catch (Exception e) {
-            JOptionPane.showConfirmDialog(null, e);
+        }
+        return 0;
+    }
+
+    public void descricaoMulta() {
+        boolean temMulta = false;
+        int valorMultas = multasTomadas();
+        if (valorMultas > 0) {
+            temMulta = true;
+        }
+        if (temMulta) {
+            String resultado = "";
+            resultado += "Modelo - Placa - Descrição - Valor - Data " + "\n";
+            String sql = "select v.modelo, v.placa, m.descricao, m.valor , am.`data` from AplicarMulta am \n"
+                    + "join Pessoa p \n"
+                    + "on am.motorista_multado = p.id\n"
+                    + "join Veiculo v \n"
+                    + "on am.veiculo_multado = v.id \n"
+                    + "join Multa m \n"
+                    + "on am.multa_aplicada = m.id ";
+
+            try {
+                pst = conexao.prepareStatement(sql);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    temMulta = true;
+                    resultado += (rs.getString(1) + " - " + rs.getString(2) + " - " + rs.getString(3) + " - " + rs.getString(4) + " - " + rs.getString(5) + "\n");
+                }
+                resultado += "Valor total das multas : R$ " + valorMultas;
+                saidaGerente.setText(resultado);
+            } catch (Exception e) {
+                JOptionPane.showConfirmDialog(null, e);
+            }
+        } else {
+            saidaGerente.setText("Os veiculos da empresa não tem multas");
         }
     }
 
@@ -1268,7 +1273,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void cx_in_assembler_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_assembler_veiculoActionPerformed
         // TODO add your handling code here:
-        funcoes.veiculosCadastrados();
+
     }//GEN-LAST:event_cx_in_assembler_veiculoActionPerformed
 
     private void cx_in_model_veiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cx_in_model_veiculoActionPerformed
